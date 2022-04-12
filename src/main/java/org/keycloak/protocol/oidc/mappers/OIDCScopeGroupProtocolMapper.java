@@ -88,7 +88,7 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
 
         if (groupName.isPresent()) {
             Optional<String> membership = userSession.getUser().getGroupsStream()
-                    .filter(g -> g.getName().equals(groupName.get()))
+                    .filter(g -> g.getName().equalsIgnoreCase(groupName.get()))
                     .map(useFullPath(mappingModel)
                             ? ModelToRepresentation::buildGroupPath
                             : GroupModel::getName)
