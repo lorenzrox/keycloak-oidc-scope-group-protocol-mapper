@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.keycloak.models.ClientSessionContext;
 import org.keycloak.models.GroupModel;
@@ -86,21 +85,21 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
         AuthorizationRequestContext authorizationRequestContext = clientSessionCtx.getAuthorizationRequestContext();
 
         String scopeName = mappingModel.getConfig().get(SCOPE);
-        Optional<String> groupName = authorizationRequestContext.getAuthorizationDetailEntries()
+        String groupName = authorizationRequestContext.getAuthorizationDetailEntries()
                 .stream()
                 .filter(d -> d.getClientScope().getName().equals(scopeName))
                 .map(d -> d.getDynamicScopeParam())
-                .findFirst();
+                .findFirst().orElse(null);
 
-        if (groupName.isPresent()) {
-            Optional<String> membership = userSession.getUser().getGroupsStream()
-                    .filter(g -> g.getName().equalsIgnoreCase(groupName.get()))
+        if (groupName != null) {
+            String membership = userSession.getUser().getGroupsStream()
+                    .filter(g -> g.getName().equalsIgnoreCase(groupName))
                     .map(useFullPath(mappingModel)
                             ? ModelToRepresentation::buildGroupPath
                             : GroupModel::getName)
-                    .findFirst();
-            if (membership.isPresent()) {
-                OIDCAttributeMapperHelper.mapClaim(idToken, mappingModel, membership.get());
+                    .findFirst().orElse(null);
+            if (membership != null) {
+                OIDCAttributeMapperHelper.mapClaim(idToken, mappingModel, membership);
             }
         }
     }
