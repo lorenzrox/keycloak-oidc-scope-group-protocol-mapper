@@ -21,28 +21,34 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
         implements OIDCAccessTokenMapper, OIDCIDTokenMapper, UserInfoTokenMapper {
     private static final List<ProviderConfigProperty> configProperties = new ArrayList<ProviderConfigProperty>();
 
+    private static final String FULL_PATH = "fullPath";
+    private static final String SCOPE = "scope";
+
+    private static final String FULL_PATH_LABEL = "oidc-scope-group-protocol-mapper.full-path.label";
+    private static final String FULL_PATH_HELP_TEXT = "oidc-scope-group-protocol-mapper.full-path.tooltip";
+    private static final String SCOPE_LABEL = "oidc-scope-group-protocol-mapper.scope.label";
+    private static final String SCOPE_HELP_TEXT = "oidc-scope-group-protocol-mapper.scope.tooltip";
+
     public static final String PROVIDER_ID = "oidc-scope-group-protocol-mapper";
 
     static {
         OIDCAttributeMapperHelper.addTokenClaimNameConfig(configProperties);
 
         ProviderConfigProperty fullPathProperty = new ProviderConfigProperty();
-        fullPathProperty.setName("full.path");
-        fullPathProperty.setLabel("Full group path");
+        fullPathProperty.setName(FULL_PATH);
+        fullPathProperty.setLabel(FULL_PATH_LABEL);
         fullPathProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
         fullPathProperty.setDefaultValue("true");
-        fullPathProperty.setHelpText(
-                "Include full path to group i.e. /top/level1/level2, false will just specify the group name");
+        fullPathProperty.setHelpText(FULL_PATH_HELP_TEXT);
 
         configProperties.add(fullPathProperty);
 
         ProviderConfigProperty scopeProperty = new ProviderConfigProperty();
-        scopeProperty.setName("scope");
-        scopeProperty.setLabel("Scope name");
+        scopeProperty.setName(SCOPE);
+        scopeProperty.setLabel(SCOPE_LABEL);
         scopeProperty.setType(ProviderConfigProperty.STRING_TYPE);
         scopeProperty.setDefaultValue("group");
-        scopeProperty.setHelpText(
-                "Name of dynamic scope, which will be used to match the default group. Defaults to 'group'");
+        scopeProperty.setHelpText(SCOPE_HELP_TEXT);
 
         configProperties.add(scopeProperty);
 
@@ -79,7 +85,7 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
             UserSessionModel userSession, KeycloakSession keycloakSession, ClientSessionContext clientSessionCtx) {
         AuthorizationRequestContext authorizationRequestContext = clientSessionCtx.getAuthorizationRequestContext();
 
-        String scopeName = mappingModel.getConfig().get("scope");
+        String scopeName = mappingModel.getConfig().get(SCOPE);
         Optional<String> groupName = authorizationRequestContext.getAuthorizationDetailEntries()
                 .stream()
                 .filter(d -> d.getClientScope().getName().equals(scopeName))
@@ -124,6 +130,6 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
     }
 
     private static boolean useFullPath(ProtocolMapperModel mappingModel) {
-        return "true".equals(mappingModel.getConfig().get("full.path"));
+        return "true".equals(mappingModel.getConfig().get(FULL_PATH));
     }
 }
