@@ -4,7 +4,7 @@
 
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-oidc-scope-group-protocol-mapper</artifactId>
-    <version>999-SNAPSHOT</version>
+    <version>22.0.5</version>
     <packaging>jar</packaging>
     <name>KeyCloak: OIDC scope group protocol mapper</name>
     <description>KeyCloak: OIDC scope group protocol mapper</description>
@@ -46,12 +46,7 @@
             <artifactId>keycloak-services</artifactId>
             <scope>provided</scope>
             <version>${version.org.keycloak}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging</artifactId>
-            <version>${jboss.logging.version}</version>
-        </dependency>
+        </dependency>     
     </dependencies>
 
     <build>
