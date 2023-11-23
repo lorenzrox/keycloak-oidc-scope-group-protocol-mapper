@@ -42,8 +42,6 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
 
         configProperties.add(fullPathProperty);
 
-        //TODO: use default group?
-
         ProviderConfigProperty scopeProperty = new ProviderConfigProperty();
         scopeProperty.setName(SCOPE);
         scopeProperty.setLabel(SCOPE_LABEL);
@@ -103,8 +101,6 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
             if (membership != null) {
                 OIDCAttributeMapperHelper.mapClaim(idToken, mappingModel, membership);
             }
-        } else {
-
         }
     }
 
