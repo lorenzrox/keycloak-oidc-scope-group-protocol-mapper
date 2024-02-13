@@ -11,9 +11,11 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.ProtocolMapperModel;
 import org.keycloak.models.UserSessionModel;
 import org.keycloak.models.utils.ModelToRepresentation;
+import org.keycloak.protocol.ProtocolMapperUtils;
 import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.rar.AuthorizationRequestContext;
+import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.IDToken;
 
 public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
@@ -82,8 +84,25 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
     @Override
     protected void setClaim(IDToken idToken, ProtocolMapperModel mappingModel,
             UserSessionModel userSession, KeycloakSession keycloakSession, ClientSessionContext clientSessionCtx) {
-        AuthorizationRequestContext authorizationRequestContext = clientSessionCtx.getAuthorizationRequestContext();
+        String membership = getMembership(mappingModel, userSession, clientSessionCtx);
+        if (membership != null) {
+            OIDCAttributeMapperHelper.mapClaim(idToken, mappingModel, membership);
+        }
+    }
 
+    @Override
+    protected void setClaim(AccessTokenResponse accessTokenResponse, ProtocolMapperModel mappingModel,
+            UserSessionModel userSession, KeycloakSession keycloakSession,
+            ClientSessionContext clientSessionCtx) {
+        String membership = getMembership(mappingModel, userSession, clientSessionCtx);
+        if (membership != null) {
+            OIDCAttributeMapperHelper.mapClaim(accessTokenResponse, mappingModel, membership);
+        }
+    }
+
+    private static String getMembership(ProtocolMapperModel mappingModel, UserSessionModel userSession,
+            ClientSessionContext clientSessionCtx) {
+        AuthorizationRequestContext authorizationRequestContext = clientSessionCtx.getAuthorizationRequestContext();
         String scopeName = mappingModel.getConfig().get(SCOPE);
         String groupName = authorizationRequestContext.getAuthorizationDetailEntries()
                 .stream()
@@ -98,13 +117,13 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
                             ? ModelToRepresentation::buildGroupPath
                             : GroupModel::getName)
                     .findFirst().orElse(null);
-            if (membership != null) {
-                OIDCAttributeMapperHelper.mapClaim(idToken, mappingModel, membership);
-            }
+            return membership;
         }
+
+        return null;
     }
 
-    public static ProtocolMapperModel create(String name,
+    public static ProtocolMapperModel createClaimMapper(String name,
             String tokenClaimName,
             boolean consentRequired, String consentText,
             boolean accessToken, boolean idToken) {
