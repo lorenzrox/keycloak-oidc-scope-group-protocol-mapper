@@ -4,7 +4,7 @@
 
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-oidc-scope-group-protocol-mapper</artifactId>
-    <version>22.0.0</version>
+    <version>23.0.0</version>
     <packaging>jar</packaging>
     <name>KeyCloak: OIDC scope group protocol mapper</name>
     <description>KeyCloak: OIDC scope group protocol mapper</description>
