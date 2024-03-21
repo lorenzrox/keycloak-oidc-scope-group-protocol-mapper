@@ -24,11 +24,6 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
     private static final String FULL_PATH = "fullPath";
     private static final String SCOPE = "scope";
 
-    private static final String FULL_PATH_LABEL = "oidc-scope-group-protocol-mapper.full-path.label";
-    private static final String FULL_PATH_HELP_TEXT = "oidc-scope-group-protocol-mapper.full-path.tooltip";
-    private static final String SCOPE_LABEL = "oidc-scope-group-protocol-mapper.scope.label";
-    private static final String SCOPE_HELP_TEXT = "oidc-scope-group-protocol-mapper.scope.tooltip";
-
     public static final String PROVIDER_ID = "oidc-scope-group-protocol-mapper";
 
     static {
@@ -36,19 +31,21 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
 
         ProviderConfigProperty fullPathProperty = new ProviderConfigProperty();
         fullPathProperty.setName(FULL_PATH);
-        fullPathProperty.setLabel(FULL_PATH_LABEL);
+        fullPathProperty.setLabel("Full group path");
         fullPathProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
         fullPathProperty.setDefaultValue("true");
-        fullPathProperty.setHelpText(FULL_PATH_HELP_TEXT);
+        fullPathProperty.setHelpText(
+                "Include full path to group i.e. /top/level1/level2, false will just specify the group name");
 
         configProperties.add(fullPathProperty);
 
         ProviderConfigProperty scopeProperty = new ProviderConfigProperty();
         scopeProperty.setName(SCOPE);
-        scopeProperty.setLabel(SCOPE_LABEL);
+        scopeProperty.setLabel("Scope name");
         scopeProperty.setType(ProviderConfigProperty.STRING_TYPE);
         scopeProperty.setDefaultValue("group");
-        scopeProperty.setHelpText(SCOPE_HELP_TEXT);
+        scopeProperty.setHelpText(
+                "Name of dynamic scope, which will be used to match the default group. Defaults to 'group'");
 
         configProperties.add(scopeProperty);
 
