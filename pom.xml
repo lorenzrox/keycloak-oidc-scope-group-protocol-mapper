@@ -4,7 +4,7 @@
 
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-oidc-scope-group-protocol-mapper</artifactId>
-    <version>23.0.0</version>
+    <version>24.0.0</version>
     <packaging>jar</packaging>
     <name>KeyCloak: OIDC scope group protocol mapper</name>
     <description>KeyCloak: OIDC scope group protocol mapper</description>
@@ -17,8 +17,9 @@
         <version.org.keycloak>${project.version}</version.org.keycloak>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
