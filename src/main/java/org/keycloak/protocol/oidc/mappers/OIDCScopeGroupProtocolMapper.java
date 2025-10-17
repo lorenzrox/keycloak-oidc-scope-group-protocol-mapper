@@ -1,9 +1,7 @@
 package org.keycloak.protocol.oidc.mappers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import org.keycloak.models.ClientSessionContext;
 import org.keycloak.models.GroupModel;
@@ -11,7 +9,6 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.ProtocolMapperModel;
 import org.keycloak.models.UserSessionModel;
 import org.keycloak.models.utils.ModelToRepresentation;
-import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.rar.AuthorizationRequestContext;
 import org.keycloak.representations.AccessTokenResponse;
@@ -130,29 +127,5 @@ public class OIDCScopeGroupProtocolMapper extends AbstractOIDCProtocolMapper
         }
 
         return null;
-    }
-
-    public static ProtocolMapperModel createClaimMapper(String name,
-            String tokenClaimName,
-            boolean consentRequired, String consentText,
-            boolean accessToken, boolean idToken) {
-        ProtocolMapperModel mapper = new ProtocolMapperModel();
-        mapper.setName(name);
-        mapper.setProtocolMapper(PROVIDER_ID);
-        mapper.setProtocol(OIDCLoginProtocol.LOGIN_PROTOCOL);
-
-        Map<String, String> config = new HashMap<String, String>();
-        config.put(OIDCAttributeMapperHelper.TOKEN_CLAIM_NAME, tokenClaimName);
-
-        if (accessToken) {
-            config.put(OIDCAttributeMapperHelper.INCLUDE_IN_ACCESS_TOKEN, "true");
-        }
-
-        if (idToken) {
-            config.put(OIDCAttributeMapperHelper.INCLUDE_IN_ID_TOKEN, "true");
-        }
-
-        mapper.setConfig(config);
-        return mapper;
     }
 }
